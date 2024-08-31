@@ -1,6 +1,6 @@
 {
 	"version": "1.3.2",
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"minimum_chrome_version": "56.0.0",
 	"name": "币",
 	"short_name": "coin",
@@ -10,7 +10,7 @@
 		"32": "static/icons/icon.png",
 		"128": "static/icons/icon.png"
 	},
-	"browser_action": {
+	"action": {
 		"default_icon": {
 			"128": "static/icons/icon.png"
 		},
@@ -18,21 +18,25 @@
 		"default_title": "币"
 	},
 	"background": {
-		"page": "background.html",
-		"persistent": true
+		"service_worker": "background.js"
 	},
 	"options_page": "option.html",
 	"content_scripts": [],
 	"web_accessible_resources": ["static/js/*"],
-	"content_security_policy": "script-src 'self' https://at.alicdn.com 'unsafe-eval'; object-src 'self'",
+	"content_security_policy": {
+		"extension_pages": "script-src 'self'; object-src 'self'",
+		"sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self';"
+	},
 	"permissions": [
 		"storage",
 		"contextMenus",
 		"webRequest",
 		"webRequestBlocking",
-		"notifications",
+		"notifications"
+	],
+	"host_permissions": [
 		"*://*.mytokenapi.com/*",
 		"*://*.mytokencap.com/*",
 		"*://*.jinse.com/*"
-	]
+  ]
 }

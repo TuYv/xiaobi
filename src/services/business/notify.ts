@@ -22,7 +22,7 @@ const loopFn = async (id: string) => {
 };
 // 创建通知
 export const createCoinNotify = (id: string) => {
-	const noticeSaga = new Saga(() => loopFn(id));
+	const noticeSaga = new Saga(loopFn);
 	noticeSaga.start(async (data) => {
 		const d = data?.[0] ?? data;
 
@@ -53,7 +53,7 @@ export const createCoinNotify = (id: string) => {
 					title = `${symbol} 正在上涨`;
 				}
 				if (!compare && price_usd < rule) {
-					title = `${symbol} 正在上涨`;
+					title = `${symbol} 正在下跌`;
 				}
 				if ((compare && price_usd > rule) || (!compare && price_usd < rule)) {
 					options.title = title;

@@ -11,33 +11,39 @@ import { uniqueData } from '@Src/utils';
 import { createCoinNotify } from '../business/notify';
 
 interface ObserverType {
-	list: { [key: string]: Saga };
-	add: (uid: string, instance: Saga) => void;
-	remove: (uid: string) => void;
-	init: () => void;
+  list: { [key: string]: Saga };
+  add: (uid: string, instance: Saga) => void;
+  remove: (uid: string) => void;
+  init: () => void;
 }
 
 const Observer: ObserverType = {
-	list: {},
-	add(uid, instance) {
-		if (this.list[uid]) return;
+  list: {},
+  add(uid, instance) {
+    if (this.list[uid]) return;
 
-		this.list[uid] = instance;
-	},
-	remove(uid) {
-		this.list[uid].stop();
-		delete this.list[uid];
-	},
-	async init() {
-		// 装载syncStorage的通知数据和badge数据
-		const syncData = await getSyncData(SyncKey.Notifications);
-		const notify = syncData[SyncKey.Notifications];
-		const notices = uniqueData(notify, 'id');
+    this.list[uid] = instance;
+    instance.start((data) => {
+      // 处理数据
+      console.log(`Received data for ${uid}:`, data);
+    });
+  },
+  remove(uid) {
+    if (this.list[uid]) {
+      this.list[uid].stop();
+      delete this.list[uid];
+    }
+  },
+  async init() {
+    // 装载syncStorage的通知数据和badge数据
+    const syncData = await getSyncData(SyncKey.Notifications);
+    const notify = syncData[SyncKey.Notifications];
+    const notices = uniqueData(notify, 'id');
 
-		notices.forEach((v) => {
-			this.add(v.uid, createCoinNotify(v.id));
-		});
-	},
+    notices.forEach((v) => {
+      this.add(v.uid, createCoinNotify(v.id));
+    });
+  },
 };
 
 export default Observer;
