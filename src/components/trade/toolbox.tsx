@@ -19,6 +19,7 @@ interface HighTipProps {
 	status: boolean;
 	color: string;
 	clickEvent: (id: number) => void;
+	children?: React.ReactNode; // 添加 children 属性
 }
 
 interface EventList {

@@ -5,6 +5,7 @@
  * @Description: chrome api 封装
  */
 import { DefaultObject, SyncDataType } from '@InterFace/index';
+import { storage } from 'webextension-polyfill';
 
 type SendMessage = (params: { command: string; data?: DefaultObject | string | number | null }) => Promise<any>;
 
@@ -31,17 +32,17 @@ export const createNotify: CreateNotify = (options) =>
 
 export const setBadgeText: SetBadgeText = (text) =>
 	new Promise((resolve) => {
-		chrome.browserAction.setBadgeText({ text }, resolve);
+		chrome.action.setBadgeText({ text }, resolve);
 	});
 
 export const setBadgeBackground: SetBadgeColor = (color) =>
 	new Promise((resolve) => {
-		chrome.browserAction.setBadgeBackgroundColor({ color }, resolve);
+		chrome.action.setBadgeBackgroundColor({ color }, resolve);
 	});
 
 export const setBadgeTitle = (title: string) =>
 	new Promise((resolve) => {
-		chrome.browserAction.setTitle({ title }, () => resolve(1));
+		chrome.action.setTitle({ title }, () => resolve(1));
 	});
 
 export const getExtURL = (path: string) => chrome.runtime.getURL(path);
@@ -50,15 +51,15 @@ export const getManifest = () => chrome.runtime.getManifest();
 
 export const getSyncData: GetSyncMethod<SyncDataType> = (fields) =>
 	new Promise((resolve) => {
-		chrome.storage.sync.get(fields, (d) => resolve(d as SyncDataType));
+		storage.sync.get(fields as string | string[] | Record<string, unknown> | null).then((d) => resolve(d as SyncDataType));
 	});
 
 export const setSyncData = (items: DefaultObject) =>
 	new Promise((resolve) => {
-		chrome.storage.sync.set(items, () => resolve(1));
+		storage.sync.set(items).then(() => resolve(1));
 	});
 
 export const removeSyncData = (fields: string | string[]) =>
 	new Promise((resolve) => {
-		chrome.storage.sync.remove(fields, () => resolve(1));
+		storage.sync.remove(fields).then(() => resolve(1));
 	});

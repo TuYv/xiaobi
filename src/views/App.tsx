@@ -82,9 +82,9 @@ const App: React.FC = () => {
 	};
 
 	useEffect(() => {
-		chrome.runtime.onMessage.addListener(onMessageListener);
+		chrome.runtime.onMessageExternal.addListener(onMessageListener);
 		return () => {
-			chrome.runtime.onMessage.removeListener(onMessageListener);
+			chrome.runtime.onMessageExternal.removeListener(onMessageListener);
 		};
 	}, []);
 

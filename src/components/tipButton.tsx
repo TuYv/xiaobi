@@ -6,6 +6,7 @@ interface Props {
 	placement: 'top' | 'left';
 	outState?: boolean; //	外层状态控制
 	onClick?: () => void;
+	children?: React.ReactNode; // 添加 children 属性
 }
 
 const fadeIn = keyframes`

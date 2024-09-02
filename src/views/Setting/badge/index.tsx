@@ -150,9 +150,10 @@ const Badge = () => {
 	};
 
 	useEffect(() => {
-		chrome.runtime.onMessage.addListener(onMessageListener);
+		const port = chrome.runtime.connect();
+		port.onMessage.addListener(onMessageListener);
 		return () => {
-			chrome.runtime.onMessage.removeListener(onMessageListener);
+			port.onMessage.removeListener(onMessageListener);
 		};
 	}, []);
 

@@ -1,6 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
+interface TitleProps {
+	children: React.ReactNode;
+}
+
 const WrapperUI = styled.p`
 	display: block;
 	width: 100%;
@@ -11,6 +15,6 @@ const WrapperUI = styled.p`
 	border-bottom: 1px solid ${(p) => p.theme.titleBorder};
 `;
 
-const Title: React.FC = ({ children }) => <WrapperUI>{children}</WrapperUI>;
+const Title: React.FC<TitleProps> = ({ children }) => <WrapperUI>{children}</WrapperUI>;
 
 export default Title;

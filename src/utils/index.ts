@@ -13,7 +13,7 @@ type AccuracyData = (num: string | number, bit: number) => string;
 
 // 判断是什么浏览器
 export const isFireFox = typeof InstallTrigger !== 'undefined';
-export const isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+export const isChrome = !!window.chrome && !window.chrome.runtime;
 // 判断操作系统
 export const isWindows = () => {
 	const agent = navigator.userAgent.toLowerCase();
@@ -168,7 +168,8 @@ export const changeViewPort = (multiple: number) => {
 		document.body.style.transform = `scale(${res}, ${res})`;
 		document.body.style.transformOrigin = 'left top';
 	} else {
-		document.body.style.zoom = res.toString();
+		document.body.style.transform = `scale(${res})`;
+		document.body.style.transformOrigin = 'top left';
 	}
 };
 
@@ -189,7 +190,7 @@ export const formatBadge = (num: number | string, key: string, type: boolean) =>
 			[10000000, (n) => `${accuracyData(+n / 10000, 0)}w`],
 		];
 
-		const current = rulesMap.find(([r]) => num < r);
+		const current = rulesMap.find(([r]) => +num < r); // 将 num 转换为数字
 		if (current) {
 			return current[1](num);
 		}

@@ -10,14 +10,14 @@ const postcssNormalize = require('postcss-normalize')
 const MiniCssPlugin = require('mini-css-extract-plugin')
 const postcssFlexbugs = require('postcss-flexbugs-fixes')
 const ForkTsCheckerPlugin = require('fork-ts-checker-webpack-plugin');
-const OptimizeCssPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin'); // 新增这行
 
 const resolve = p => path.resolve(__dirname, p)
 
 module.exports = {
 	entry: {
 		index: resolve('../src/index.tsx'),
-		background: resolve('../src/services/index.ts'),
+		background: resolve('../public/background.js'),
 		option: resolve('../src/optionPage/index.tsx')
 	},
 	output: {
@@ -111,7 +111,7 @@ module.exports = {
 					compress: { pure_funcs: ['console.log'] }
 				}
 			}),
-			!isDev && new OptimizeCssPlugin()
+			!isDev && new CssMinimizerPlugin() // 替换为 CssMinimizerPlugin
 		].filter(Boolean),
 		splitChunks: {
 			chunks: 'all',
@@ -146,12 +146,12 @@ module.exports = {
 			template: resolve('../public/index.html'),
 			chunks: ["vendors", "option"]
 		}),
-		new HtmlPlugin({
-			title: "背景页",
-			filename: 'background.html',
-			template: resolve('../public/index.html'),
-			chunks: ["vendors", "background"]
-		}),
+		// new HtmlPlugin({
+		// 	title: "背景页",
+		// 	filename: 'background.html',
+		// 	template: resolve('../public/index.html'),
+		// 	chunks: ["vendors", "background"]
+		// }),
 		new CopyPlugin({
 			patterns: [
 				{
@@ -161,6 +161,10 @@ module.exports = {
 				{
 					from: "public/icons",
 					to: "static/icons",
+				},
+				{
+					from: "public/background.js",
+					to: "background.js",
 				},
 			]
 		}),

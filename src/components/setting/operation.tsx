@@ -4,6 +4,7 @@ import styled from 'styled-components';
 interface Props {
 	title: string;
 	desc?: string;
+	children?: React.ReactNode; // 添加 children 属性
 }
 
 const WrapperUI = styled.div`

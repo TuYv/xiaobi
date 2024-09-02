@@ -4,6 +4,7 @@ import styled from 'styled-components';
 interface Props {
 	style?: { [key: string]: string };
 	changeEvent: (p: any) => void;
+	children?: React.ReactNode; // 添加 children 属性
 }
 
 export const RatioBtnUI = styled.button`

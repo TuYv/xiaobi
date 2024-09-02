@@ -22,17 +22,22 @@
 	},
 	"options_page": "option.html",
 	"content_scripts": [],
-	"web_accessible_resources": ["static/js/*"],
+	"web_accessible_resources": [
+		{
+			"resources": ["static/js/*"],
+			"matches": ["<all_urls>"]
+		}
+	],
 	"content_security_policy": {
 		"extension_pages": "script-src 'self'; object-src 'self'",
-		"sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self';"
+		"sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self'; child-src 'self';"
 	},
 	"permissions": [
 		"storage",
 		"contextMenus",
-		"webRequest",
-		"webRequestBlocking",
-		"notifications"
+		"declarativeNetRequest",
+		"notifications",
+		"runtime"
 	],
 	"host_permissions": [
 		"*://*.mytokenapi.com/*",

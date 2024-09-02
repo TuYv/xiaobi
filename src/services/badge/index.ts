@@ -30,6 +30,29 @@ const defaultSetting = {
 	viewType: true,
 	speed: 5000,
 };
+
+// 获取和修改badge 设置
+const setBadgeSetting: BackgroundAsyncMethod = async (send, d) => {
+	await setSyncData({ [SyncKey.BadgeSetting]: d });
+	send(1);
+};
+const getBadgeSetting: BackgroundAsyncMethod = async (send, d) => {
+	const syncData = await getSyncData(SyncKey.BadgeSetting);
+	const setting = syncData[SyncKey.BadgeSetting];
+
+	send(setting || defaultSetting);
+};
+
+const badgeLoop = async () => {
+	const syncData = await getSyncData(SyncKey.Badge);
+	const badge = syncData[SyncKey.Badge];
+
+	const { code, timestamp } = decode();
+	const { data } = await getDetailXHR({ code, timestamp, currency_on_market_id: badge });
+
+	return data;
+};
+
 // 创建一个名为 'updateBadge' 的定时任务，每分钟执行一次
 chrome.alarms.create('updateBadge', { periodInMinutes: 1 });
 

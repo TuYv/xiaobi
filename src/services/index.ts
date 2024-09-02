@@ -1,4 +1,5 @@
-// import localMap from './business/local';
+import { runtime } from 'webextension-polyfill';
+
 import badge from '@Services/badge';
 import marketMap from './business/market';
 import local from './business/local';
@@ -9,7 +10,7 @@ import notify from './business/notify';
 import './storage';
 import './smallWindow';
 
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+runtime.onMessage.addListener((msg: any, sender: any, sendResponse: (response?: any) => void) => {
 	const cmdMap = new Map([...marketMap, ...local, ...news, ...search, ...notify, ...badge]);
 	const { command, data } = msg;
 	cmdMap.get(command)?.(sendResponse, data);
